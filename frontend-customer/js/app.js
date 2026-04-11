@@ -12,6 +12,9 @@ let cart = JSON.parse(localStorage.getItem('medi_cart') || '[]');
 let authMode = 'login';
 let currentOrderForCheckout = null;
 
+// Medicine registry — stores medicine objects by id to avoid broken onclick HTML attributes
+const medicineRegistry = {};
+
 // ================================================
 // ROUTER
 // ================================================
@@ -287,6 +290,7 @@ function updateAddToCartButtons() {
 // ================================================
 function proceedCheckout() {
     if (!currentUser) { closeCart(); showAuthModal('login'); return; }
+    if (cart.length === 0) { showToast('Your cart is empty', 'info'); return; }
     closeCart();
 
     const itemsHtml = cart.map(item => `
@@ -645,6 +649,10 @@ async function cancelOrder(id) {
 // CARD RENDERER
 // ================================================
 function medCard(m, i) {
+    // Register medicine in registry so we can look it up safely by id
+    // This avoids broken onclick attributes when names/descriptions contain quotes
+    medicineRegistry[m.id] = m;
+
     const stockClass = m.stock === 0 ? 'stock-out' : m.stock < 10 ? 'stock-low' : 'stock-ok';
     const stockLabel = m.stock === 0 ? 'Out of Stock' : m.stock < 10 ? `Only ${m.stock} left` : `${m.stock} in stock`;
     const catEmoji = { painkillers:'💊', antibiotics:'🦠', vitamins:'🧪', skincare:'💆',
@@ -654,7 +662,7 @@ function medCard(m, i) {
     <div class="med-card" style="animation-delay:${i * 0.04}s;">
         <div class="med-card-img">
             <img src="${m.image_url || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400'}"
-                 alt="${m.name}" loading="lazy"
+                 alt="" loading="lazy"
                  onerror="this.src='https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400'">
             ${m.requires_prescription ? `<span class="rx-badge">Rx Required</span>` : ''}
             <span class="cat-badge">${catEmoji[m.category] || '📦'} ${m.category?.replace('_', ' ')}</span>
@@ -668,13 +676,22 @@ function medCard(m, i) {
                 <span class="med-stock ${stockClass}">${stockLabel}</span>
             </div>
             <button class="add-to-cart-btn" data-med-id="${m.id}"
-                    onclick='addToCart(${JSON.stringify(m)})'
                     ${m.stock === 0 ? 'disabled' : ''}>
                 ${m.stock === 0 ? '❌ Out of Stock' : '🛒 Add to Cart'}
             </button>
         </div>
     </div>`;
 }
+
+// Delegated click handler for Add to Cart buttons (replaces inline onclick)
+// Safe for any medicine name/description content
+document.addEventListener('click', e => {
+    const btn = e.target.closest('.add-to-cart-btn');
+    if (!btn || btn.disabled) return;
+    const id = parseInt(btn.dataset.medId);
+    const med = medicineRegistry[id];
+    if (med) addToCart(med);
+});
 
 // ================================================
 // UTILITY
