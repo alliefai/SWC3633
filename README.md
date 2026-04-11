@@ -243,6 +243,31 @@ Authorization: Bearer <your_token_here>
 
 ---
 
+## 👤 Default Admin Account
+
+Admin accounts **cannot** be created via the registration form (only `customer` role is allowed).
+The admin account is created by running a setup script.
+
+### Create Admin Account (one time only)
+
+```bash
+cd C:\Users\user\SWC3633\backend
+node create-admin.js
+```
+
+### Admin Login Credentials
+
+| Field | Value |
+|-------|-------|
+| **Email** | `admin@medideliver.com` |
+| **Password** | `admin123` |
+| **Role** | `admin` |
+
+> Admin can: manage all medicines (add/edit/delete), view all orders, manage all users.
+
+---
+
+
 ## 🌱 Pre-seeded Medicine Data
 
 The schema automatically seeds **12 medicines** across these categories:
