@@ -92,7 +92,7 @@ After importing, you should have a `medideliver` database with these 4 tables:
 
 | Table | Description |
 |-------|-------------|
-| `users` | Customers, admins, and riders |
+| `users` | Registered customers |
 | `medicines` | 12 pharmacy products (pre-seeded) |
 | `orders` | Customer orders |
 | `order_items` | Line items per order |
@@ -174,9 +174,6 @@ node server.js
 |--------|----------|-------------|
 | GET | `/api/medicines` | List all medicines (with filter/search/sort) |
 | GET | `/api/medicines/:id` | Get single medicine |
-| POST | `/api/medicines` | Add medicine (admin only) |
-| PUT | `/api/medicines/:id` | Update medicine (admin only) |
-| DELETE | `/api/medicines/:id` | Delete medicine (admin only) |
 
 **Query Parameters for GET /api/medicines:**
 ```
@@ -189,19 +186,17 @@ node server.js
 ### Orders (Login required)
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/orders` | Get orders (own for customer, all for admin) |
+| GET | `/api/orders` | Get your own orders |
 | GET | `/api/orders/:id` | Get order detail |
-| POST | `/api/orders` | Place new order (customer only) |
-| PUT | `/api/orders/:id` | Update order status |
-| DELETE | `/api/orders/:id` | Cancel/delete order |
+| POST | `/api/orders` | Place new order |
+| PUT | `/api/orders/:id` | Cancel an order |
+| DELETE | `/api/orders/:id` | Delete own order |
 
-### Users (Admin only)
+### Users
 | Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/users` | List all users |
-| GET | `/api/users/:id` | Get user profile |
-| PUT | `/api/users/:id` | Update user |
-| DELETE | `/api/users/:id` | Delete user |
+|--------|----------|--------------|
+| GET | `/api/users/:id` | Get own user profile |
+| PUT | `/api/users/:id` | Update own profile |
 
 ### Weather
 | Method | Endpoint | Description |
@@ -240,32 +235,6 @@ POST /api/auth/login
 ```
 Authorization: Bearer <your_token_here>
 ```
-
----
-
-## 👤 Default Admin Account
-
-Admin accounts **cannot** be created via the registration form (only `customer` role is allowed).
-The admin account is created by running a setup script.
-
-### Create Admin Account (one time only)
-
-```bash
-cd C:\Users\user\SWC3633\backend
-node create-admin.js
-```
-
-### Admin Login Credentials
-
-| Field | Value |
-|-------|-------|
-| **Email** | `admin@medideliver.com` |
-| **Password** | `admin123` |
-| **Role** | `admin` |
-
-> Admin can: manage all medicines (add/edit/delete), view all orders, manage all users.
-
----
 
 
 ## 🌱 Pre-seeded Medicine Data
@@ -319,7 +288,7 @@ WEATHER_API_KEY=your_openweathermap_api_key_here
 ## 👨‍💻 Developer
 
 - **Student 1:** Customer Portal (`/frontend-customer`) — Browse medicines, cart, checkout, order history
-- **Student 2:** Admin/Pharmacist Portal (`/frontend`) — Manage medicines, view all orders
+- **Student 2:** Pharmacist Portal (`/frontend`) — Manage medicines, view orders
 
 **Course:** SWC3633 Web API Development
 **Year:** 2026
