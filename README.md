@@ -33,7 +33,7 @@ SWC3633/
 │   ├── css/style.css
 │   ├── js/app.js
 │   └── index.html
-├── frontend/                 # Admin/Pharmacist Portal (Student 2)
+├── frontend/                 
 │   ├── css/style.css
 │   ├── js/app.js
 │   └── index.html
