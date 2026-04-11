@@ -261,9 +261,14 @@ function renderCartDrawer() {
 }
 
 function showCart() {
+    console.log('[MediDeliver] showCart called, cart items:', cart.length);
     renderCartDrawer();
-    document.getElementById('cart-overlay').style.display = 'block';
-    document.getElementById('cart-drawer').classList.add('open');
+    const overlay = document.getElementById('cart-overlay');
+    const drawer  = document.getElementById('cart-drawer');
+    overlay.style.display = 'block';
+    // Force reflow then add class for CSS transition
+    void drawer.offsetWidth;
+    drawer.classList.add('open');
 }
 
 function closeCart() {
