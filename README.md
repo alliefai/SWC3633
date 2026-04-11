@@ -29,7 +29,7 @@ SWC3633/
 │   ├── package.json
 │   ├── seed.js               # Optional extra seed script
 │   └── server.js             # Main Express server (entry point)
-├── frontend-customer/        # Customer Portal (Student 1)
+├── frontend-customer/        # Customer Portal 
 │   ├── css/style.css
 │   ├── js/app.js
 │   └── index.html
@@ -288,7 +288,7 @@ WEATHER_API_KEY=your_openweathermap_api_key_here
 ## 👨‍💻 Developer
 
 - **Student 1:** Customer Portal (`/frontend-customer`) — Browse medicines, cart, checkout, order history
-- **Student 2:** Pharmacist Portal (`/frontend`) — Manage medicines, view orders
+
 
 **Course:** SWC3633 Web API Development
 **Year:** 2026
