@@ -182,7 +182,7 @@ function addToCart(med) {
         if (existing.qty >= med.stock) { showToast('No more stock available', 'error'); return; }
         existing.qty++;
     } else {
-        cart.push({ id: med.id, name: med.name, price: med.price, image_url: med.image_url, unit: med.unit, stock: med.stock, qty: 1 });
+        cart.push({ id: med.id, name: med.name, price: parseFloat(med.price), image_url: med.image_url, unit: med.unit, stock: med.stock, qty: 1 });
     }
     saveCart();
     updateCartBadge(true);
@@ -217,7 +217,7 @@ function updateCartBadge(bump) {
     if (bump) { badge.classList.remove('bump'); void badge.offsetWidth; badge.classList.add('bump'); }
 }
 
-function getCartTotal() { return cart.reduce((s, c) => s + c.price * c.qty, 0); }
+function getCartTotal() { return cart.reduce((s, c) => s + parseFloat(c.price) * c.qty, 0); }
 
 function renderCartDrawer() {
     const body   = document.getElementById('cart-body');
@@ -241,12 +241,12 @@ function renderCartDrawer() {
                      onerror="this.src='https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200'">
                 <div class="cart-item-info">
                     <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-price">RM ${(item.price * item.qty).toFixed(2)}</div>
+                    <div class="cart-item-price">RM ${(parseFloat(item.price) * item.qty).toFixed(2)}</div>
                     <div class="cart-item-controls">
                         <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
                         <span class="qty-val">${item.qty}</span>
                         <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
-                        <span style="font-size:0.75rem;color:var(--text-muted);">× RM ${item.price.toFixed(2)}</span>
+                        <span style="font-size:0.75rem;color:var(--text-muted);">× RM ${parseFloat(item.price).toFixed(2)}</span>
                     </div>
                 </div>
                 <button class="cart-item-remove" onclick="removeFromCart(${item.id})" title="Remove">🗑️</button>
