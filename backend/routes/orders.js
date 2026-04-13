@@ -233,7 +233,14 @@ router.put('/:id', authenticateToken, async (req, res) => {
              estimated_delivery = COALESCE(?, estimated_delivery),
              delivered_at = COALESCE(?, delivered_at)
              WHERE id = ?`,
-            [status, rider_id, notes, estimated_delivery || null, deliveredAt, req.params.id]
+            [
+                status              ?? null,
+                rider_id            ?? null,
+                notes               ?? null,
+                estimated_delivery  ?? null,
+                deliveredAt,
+                req.params.id
+            ]
         );
 
         // If order cancelled, restore stock
